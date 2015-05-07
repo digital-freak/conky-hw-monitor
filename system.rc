@@ -1,0 +1,65 @@
+background             no
+
+cpu_avg_samples        2
+net_avg_samples        2
+diskio_avg_samples     2
+double_buffer          yes
+no_buffers             yes
+text_buffer_size       2048
+total_run_times        0
+update_interval        1.0
+
+alignment              tr
+gap_x                  20
+gap_y                  10
+border_inner_margin    0
+border_outer_margin    0
+border_width           0
+
+maximum_width          172
+minimum_size           172 12
+
+own_window             yes
+own_window_class       conky_system_monitor
+own_window_hints       undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_argb_visual yes
+own_window_transparent yes
+own_window_type        normal
+
+default_color          E1E7CD
+default_outline_color  281C06
+default_shade_color    281C06
+default_bar_size       172 4
+
+draw_borders           no
+draw_graph_borders     yes
+draw_outline           no
+draw_shades            no
+
+override_utf8_locale   yes
+use_xft                yes
+xftalpha               0.8
+xftfont                DejaVu Sans:size=8
+
+short_units            yes
+
+lua_load system.lua
+
+TEXT
+${color 2A403D}${font Poky:size=16}P${font} ${color B53C27}${hr}${color}
+${voffset -20}${alignr}${offset -3}Intel Core i3 CPU 550
+${voffset 5}${alignr}${offset -3}3.20GHz
+${voffset -3}${alignr}${offset -120}${font Open Sans Condensed Light:size=14}${cpu cpu0}%${font}
+${voffset -22}${alignr}${offset -3}${cpugraph cpu0 16,110}
+${goto 30}${lua cpu_temperature 0}${alignr}${offset -3}${lua cpu_temperature 1}
+${voffset -4}${goto 30}${cpubar cpu1 3,60}${alignr}${offset -3}${cpubar cpu2 3,60}
+${goto 30}${lua cpu_temperature 2}${alignr}${offset -3}${lua cpu_temperature 3}
+${voffset -4}${goto 30}${cpubar cpu3 3,60}${alignr}${offset -3}${cpubar cpu4 3,60}
+${voffset -4}${goto 30}${color 7F8484}${stippled_hr}${color}
+${color 2A403D}${font Poky:size=16}M${font} ${color B53C27}${hr}${color}
+${voffset -20}${alignr}${offset -3}⛂ ${mem} │ ⛀ ${memfree}
+${voffset 5}${alignr}${offset -3}⛃ ${memmax}
+${goto 30}RAM:${alignr}${offset -15}${memperc}%${offset -172}${alignr}${offset -3}${membar 3,60}
+
+${goto 30}SWAP:${alignr}${offset -15}${swapperc}%${offset -172}${alignr}${offset -3}${swapbar 3,60}
+${voffset -4}${goto 30}${color 7F8484}${stippled_hr}${color}
