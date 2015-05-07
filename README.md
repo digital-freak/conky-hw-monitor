@@ -38,5 +38,5 @@ Get the project files to your computer:
 
 	git clone https://github.com/digital-freak/conky-hw-monitor.git
 
-And run the `hwmon.sh` sctipt
+And run the `hwmon.sh` script
 
