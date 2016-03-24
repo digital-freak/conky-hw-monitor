@@ -15,6 +15,14 @@ get_device_model() {
 		grep "Device Model" | \
 		awk -F\: '{print $2}' | \
 		sed 's/^[ \t]*//' )
+
+	if [ -z "${DEVICE_MODEL}" ]; then
+		DEVICE_MODEL=$( camcontrol inquiry ${1} -D | \
+			cut -d\< -f2 | \
+			cut -d\> -f1 | \
+			sed 's/\ *$//' )
+	fi
+
 	echo ${DEVICE_MODEL}
 }
 
