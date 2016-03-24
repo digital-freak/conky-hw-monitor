@@ -17,7 +17,7 @@ get_device_model() {
 		sed 's/^[ \t]*//' )
 
 	if [ -z "${DEVICE_MODEL}" ]; then
-		DEVICE_MODEL=$( camcontrol inquiry ${1} -D | \
+		DEVICE_MODEL=$( camcontrol inquiry ${1} -D 2>/dev/null | \
 			cut -d\< -f2 | \
 			cut -d\> -f1 | \
 			sed 's/\ *$//' )
