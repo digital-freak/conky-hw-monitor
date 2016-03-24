@@ -23,6 +23,16 @@ get_device_capacity() {
 		grep "User Capacity" | \
 		awk -F\[ '{print $2}' | \
 		sed 's/]//' )
+
+	if [ -z "${DEVICE_CAPACITY}" ]; then
+		DEVICE_CAPACITY=$( camcontrol readcap ${1} -H -s 2>/dev/null | \
+			awk '{print $3,$4}' )
+
+		if [ -n "${DEVICE_CAPACITY}" ]; then
+			DEVICE_CAPACITY="${DEVICE_CAPACITY}B"
+		fi
+	fi
+
 	echo ${DEVICE_CAPACITY}
 }
 
@@ -34,9 +44,14 @@ get_device_temperature() {
 }
 
 get_device_partitions() {
-	PARTITIONS=$( gpart show -p ${1} | \
+	PARTITIONS=$( gpart show -p ${1} 2>/dev/null | \
 		grep -Ev "GPT|MBR|- free -" | \
 		awk '{print $3}' )
+
+	if [ "${PARTITIONS}" == "" ]; then
+		PARTITIONS="`gvfs-mount -l | grep ${1} | awk '{print $2}'`"
+	fi
+
 	echo "${PARTITIONS}"
 }
 
