@@ -13,6 +13,7 @@ CPU_SPEED="`sysctl -n hw.model | \
 CPU_CORES="`sysctl -n hw.ncpu`"
 
 CPU_LOAD=""
+NET_LOAD=""
 
 if [ ${CPU_CORES} -eq 1 ]; then
 	CPU_LOAD='${goto 30}[cpu_temp]\
@@ -44,12 +45,36 @@ else
 	done
 fi
 
+case "$( uname )" in
+	"FreeBSD" )
+		IFACES=$( ifconfig -lu | sed 's/lo[0-9]*//' );;
+	"Linux" )
+		IFACES=$( ifconfig -s | awk '{print $1}' | sed '1d;/lo/ c\' );;
+	* )
+		;;
+esac
+
+for IFACE in ${IFACES}; do
+	ETHER=$( ifconfig ${IFACE} | grep ether | awk '{print $2}' )
+	INET=$( ifconfig ${IFACE} | grep inet | awk '{print $2}' )
+	NL='${color 2A403D}${font Poky:size=16}w${font} ${color B53C27}${hr}${color}\
+${voffset -20}${goto 30}'${IFACE}'${alignr}${offset -3}'${INET}'\
+${voffset 5}${alignr}${offset -3}'${ETHER}'\
+${voffset 5}${goto 30}↑${alignr}${offset -15}${upspeed '${IFACE}'}${offset -172}${alignr}${offset -3}${voffset -7}${upspeedgraph '${IFACE}' 16,60}\
+${goto 30}↓${alignr}${offset -15}${downspeed '${IFACE}'}${offset -172}${alignr}${offset -3}${voffset -7}${downspeedgraph '${IFACE}' 16,60}\
+${voffset -4}${goto 30}${color 7F8484}${stippled_hr}${color}'
+
+	NET_LOAD=${NET_LOAD}${NL}'\
+'
+done
+
 rm -f system.rc
 
 cat templates/system.tmpl | \
 	sed -E "s/\[cpu_name\]/${CPU_NAME}/;
 	s/\[cpu_speed\]/${CPU_SPEED}/;
-	s/\[cpu_load\]/${CPU_LOAD}/" >> ./system.rc
+	s/\[cpu_load\]/${CPU_LOAD}/;
+	s/\[net_load\]/${NET_LOAD}/" >> ./system.rc
 
 conky -c system.rc &
 exit 0
