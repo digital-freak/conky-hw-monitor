@@ -60,8 +60,8 @@ for IFACE in ${IFACES}; do
 	NL='${color 2A403D}${font Poky:size=16}w${font} ${color B53C27}${hr}${color}\
 ${voffset -20}${goto 30}'${IFACE}'${alignr}${offset -3}'${INET}'\
 ${voffset 5}${alignr}${offset -3}'${ETHER}'\
-${voffset 5}${goto 30}↑${alignr}${offset -15}${upspeed '${IFACE}'}${offset -172}${alignr}${offset -3}${voffset -7}${upspeedgraph '${IFACE}' 16,60}\
-${goto 30}↓${alignr}${offset -15}${downspeed '${IFACE}'}${offset -172}${alignr}${offset -3}${voffset -7}${downspeedgraph '${IFACE}' 16,60}\
+${voffset 5}${goto 30}↑${alignr}${offset -15}${upspeed '${IFACE}'}${offset -172}${alignr}${offset -3}${voffset -7}${upspeedgraph '${IFACE}' 16,60 E1E7CD B53C27 -t -l}\
+${goto 30}↓${alignr}${offset -15}${downspeed '${IFACE}'}${offset -172}${alignr}${offset -3}${voffset -7}${downspeedgraph '${IFACE}' 16,60 E1E7CD B53C27 -t -l}\
 ${voffset -4}${goto 30}${color 7F8484}${stippled_hr}${color}'
 
 	NET_LOAD=${NET_LOAD}${NL}'\
